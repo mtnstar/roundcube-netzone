@@ -1,0 +1,20 @@
+services:
+  roundcubemail:
+    image: roundcube/roundcubemail:latest
+    container_name: roundcubemail
+    restart: unless-stopped
+    volumes:
+      #- roundcube-www:/var/www/html
+      - ./www:/var/www/html
+      - ./db/sqlite:/var/roundcube/db
+    ports:
+      - 9002:80
+    environment:
+      - ROUNDCUBEMAIL_DB_TYPE=sqlite
+      - ROUNDCUBEMAIL_SKIN=larry
+      - ROUNDCUBEMAIL_DEFAULT_HOST=ssl://mail.netzone.ch
+      - ROUNDCUBEMAIL_DEFAULT_PORT=993
+      - ROUNDCUBEMAIL_SMTP_SERVER=tls://mail.netzone.ch
+      - ROUNDCUBEMAIL_UPLOAD_MAX_FILESIZE=50M
+volumes:
+  roundcube-www:
