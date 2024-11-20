@@ -3,6 +3,11 @@ services:
     image: roundcube/roundcubemail:latest
     container_name: roundcubemail
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "getent", "hosts", "mail.netzone.ch"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
     volumes:
       - roundcube_netzone_www:/var/www/html
       - roundcube_netzone_db:/var/roundcube/db
