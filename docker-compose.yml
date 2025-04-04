@@ -4,7 +4,7 @@ services:
     container_name: roundcubemail
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "getent", "hosts", "mail.netzone.ch"]
+      test: ["CMD-SHELL", "for i in {1..5}; do getent hosts mail.netzone.ch && exit 0 || sleep 2; done; exit 1"]
       interval: 30s
       timeout: 10s
       retries: 3
