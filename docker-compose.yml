@@ -22,6 +22,8 @@ services:
       - ROUNDCUBEMAIL_UPLOAD_MAX_FILESIZE=50M
       - ROUNDCUBEMAIL_PLUGINS=contextmenu
       - ROUNDCUBEMAIL_COMPOSER_PLUGINS=johndoh/contextmenu
+    extra_hosts:
+      - "mail.netzone.ch:212.243.197.30"
 volumes:
   roundcube_netzone_db:
   roundcube_netzone_www:
