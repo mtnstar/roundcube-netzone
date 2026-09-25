@@ -4,26 +4,29 @@ services:
     container_name: roundcubemail
     restart: unless-stopped
     healthcheck:
-      test: ["CMD-SHELL", "for i in {1..5}; do getent hosts mail.netzone.ch && exit 0 || sleep 2; done; exit 1"]
+      test: ["CMD-SHELL", "for i in {1..5}; do getent hosts mail.infomaniak.com && exit 0 || sleep 2; done; exit 1"]
       interval: 30s
       timeout: 10s
       retries: 3
     volumes:
-      - roundcube_netzone_www:/var/www/html
-      - roundcube_netzone_db:/var/roundcube/db
+      - roundcube_infomaniak_www:/var/www/html
+      - roundcube_infomaniak_db:/var/roundcube/db
     ports:
       - 127.0.0.1:9002:80
     environment:
       - ROUNDCUBEMAIL_DB_TYPE=sqlite
       #- ROUNDCUBEMAIL_SKIN=larry
-      - ROUNDCUBEMAIL_DEFAULT_HOST=ssl://mail.netzone.ch
+      - ROUNDCUBEMAIL_DEFAULT_HOST=ssl://mail.infomaniak.com
       - ROUNDCUBEMAIL_DEFAULT_PORT=993
-      - ROUNDCUBEMAIL_SMTP_SERVER=tls://mail.netzone.ch
+      - ROUNDCUBEMAIL_SMTP_SERVER=tls://mail.infomaniak.com
       - ROUNDCUBEMAIL_UPLOAD_MAX_FILESIZE=50M
       - ROUNDCUBEMAIL_PLUGINS=contextmenu
       - ROUNDCUBEMAIL_COMPOSER_PLUGINS=johndoh/contextmenu
-    extra_hosts:
-      - "mail.netzone.ch:212.243.197.30"
+    # home router DNS answers slowly (~4s per lookup), and roundcube resolves
+    # the IMAP host on every request
+    dns:
+      - 9.9.9.9
+      - 1.1.1.1
 volumes:
-  roundcube_netzone_db:
-  roundcube_netzone_www:
+  roundcube_infomaniak_db:
+  roundcube_infomaniak_www:
